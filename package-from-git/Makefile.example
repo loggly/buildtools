@@ -1,0 +1,38 @@
+DESTDIR=build
+
+# TODO(sissel): Probably could take the git repo name as the project name...
+NAME="your-project-name"
+PREFIX=/opt/loggly/proxy/porter 
+
+BRANCH=$(shell git branch | egrep '^\*' | cut -b '3-')
+REMOTEBRANCH=remotes/origin/$(BRANCH)
+# Take most recent commit as the 'timestamp' for this build.
+TIMESTAMP=$(shell git log --date=raw -n 1 $(REMOTEBRANCH) \
+            | awk '/Date:/ { print $$2 + (60 * $$3) }')
+
+VERSION=$(TIMESTAMP).$(BRANCH)
+
+.PHONY: build
+build:
+	git fetch
+	git archive --format=tar --prefix=$(DESTDIR)/ $(REMOTEBRANCH) | tar -xf -
+	rm -f .bundle/config || true # See below, BUNDLECONFIGRM
+	bundle install --path $(DESTDIR)/vendor/bundle
+
+# BUNDLECONFIGRM (sissel)
+# Bundler is very opinionated and saves the 'bundle install' options on first
+# use and ignores future options. We avoid this by blowing away .bundle/config
+# This isn't optimal, but it's better than 'bundle install' ignoring the path
+# we want to install to at package-build time.
+# It's possible there's a smarter work around here, but this works for now.
+
+.PHONY: clean
+clean:
+	rm -r $(DESTDIR)/ || true
+
+.PHONY: package
+package: build
+	fpm -s dir -t deb -C $(DESTDIR) -n $(NAME) -v $(VERSION) -C $(DESTDIR) \
+	  --prefix $(PREFIX) --exclude .svn \
+	  -d "rvm-ruby-1.9.2p180 (>= 0)" \
+	  bin/ lib/ vendor/
