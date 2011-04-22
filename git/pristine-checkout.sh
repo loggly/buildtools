@@ -1,13 +1,11 @@
 #!/bin/sh
+
+asedir=$(dirname $0)
+
 branch=$1
 destination=$2
-
-basedir=$(dirname $0)
-
-if [ -z "$branch" -o -z "$destination" ] ; then
-  echo "Usage: $0 <branch> <destination>"
-  exit 1
-fi
+[ -z "$branch" ] && branch=$(sh $basedir/current-branch.sh)
+[ -z "$destination" ] && destination="build"
 
 echo "git fetch..."
 git fetch

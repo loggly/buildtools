@@ -1,10 +1,9 @@
 #!/bin/sh
 
+basedir=$(dirname $0)
 branch=$1
-if [ -z "$branch" ] ; then
-  echo "No branch given?"
-  exit 1
-fi
+
+[ -z "$branch" ] && branch=$(sh $basedir/current-branch.sh)
 
 remote=$(git config --get branch.$branch.remote)
 
