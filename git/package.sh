@@ -10,9 +10,9 @@ basedir=$(dirname $0)
 [ -z "$branch" ] && branch=$(sh $basedir/current-branch.sh)
 
 name="$(sh $basedir/name.sh)"
-revision="$(sh $basedir/last-commit-timestamp.sh)"
 branch=$(sh $basedir/current-branch.sh)
 upstream=$(sh $basedir/upstream.sh)
+revision="$(sh $basedir/last-commit-timestamp.sh $upstream)"
 
 dir=build
 sh $basedir/pristine-checkout.sh $branch $dir

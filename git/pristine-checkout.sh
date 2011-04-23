@@ -11,7 +11,12 @@ destination=$2
 echo "git fetch..."
 git fetch
 
+gitroot=$(git rev-parse --show-toplevel)
+
 # XXX git archive --prefix vs tar -C, which one is better?
 
 echo "Putting pristine copy of $(sh $basedir/upstream.sh $branch) in $destination"
-git archive --format=tar --prefix=$destination/ $branch | tar -xf -
+(
+  cd $gitroot
+  git archive --format=tar --prefix=$destination/ $branch 
+) | tar -xf -
