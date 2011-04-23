@@ -1,5 +1,6 @@
 #!/bin/sh
 
+set -e
 basedir=$(dirname $0)
 
 branch=$1

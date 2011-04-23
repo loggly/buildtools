@@ -4,6 +4,7 @@
 # Expected usage:
 # package.sh <dir_or_file> ...
 
+set -e
 branch=$1
 basedir=$(dirname $0)
 [ -z "$branch" ] && branch=$(sh $basedir/current-branch.sh)
@@ -14,7 +15,7 @@ branch=$(sh $basedir/current-branch.sh)
 upstream=$(sh $basedir/upstream.sh)
 
 dir=build
-sh $basedir/pristine-checkout.sh $upstream $dir
+sh $basedir/pristine-checkout.sh $branch $dir
 if [ $# -eq 0 ] ; then
   # Package up the entire directory by default
   set -- . 
@@ -25,4 +26,7 @@ prefix="/opt/loggly/$name"
 [ -f $dir/Makefile ] && make -C $dir artifact
 [ -f $dir/build.xml ] && (cd $dir; ant artifact)
 
-fpm -s dir -t deb -n $name -v $revision.$branch -C $dir "$@"
+pkgname=loggly-$name
+pkgversion=$revision.$branch
+echo "Building deb package for $pkgname=$pkgversion"
+fpm -s dir -t deb -n $pkgname -v $pkgversion -C $dir "$@"
