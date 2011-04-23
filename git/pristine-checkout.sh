@@ -1,6 +1,6 @@
 #!/bin/sh
 
-asedir=$(dirname $0)
+basedir=$(dirname $0)
 
 branch=$1
 destination=$2
