@@ -29,4 +29,4 @@ prefix="/opt/loggly/$name"
 pkgname=loggly-$name
 pkgversion=$revision.$branch
 echo "Building deb package for $pkgname=$pkgversion"
-fpm -s dir -t deb -n $pkgname -v $pkgversion -C $dir "$@"
+fpm -s dir -t deb --prefix $prefix -n $pkgname -v $pkgversion -C $dir "$@"
