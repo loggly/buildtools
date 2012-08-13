@@ -13,6 +13,7 @@ name="$(sh $basedir/name.sh)"
 branch=$(sh $basedir/current-branch.sh)
 upstream=$(sh $basedir/upstream.sh)
 revision="$(sh $basedir/last-commit-timestamp.sh $upstream)"
+hash="$(git show --oneline | head -n 1 | cut -d ' ' -f 1)"
 
 dir=build
 sh $basedir/pristine-checkout.sh $branch $dir
@@ -27,6 +28,6 @@ prefix="/opt/loggly/$name"
 [ -f $dir/build.xml ] && (cd $dir; ant artifact)
 
 pkgname=loggly-$name
-pkgversion=$revision.$branch
+pkgversion=$revision.$hash.$branch
 echo "Building deb package for $pkgname=$pkgversion"
 fpm -s dir -t deb --prefix $prefix -n $pkgname -v $pkgversion -C $dir "$@"
