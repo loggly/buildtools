@@ -1,3 +1,4 @@
+#!/bin/sh
 branch=$1
 
 basedir=$(dirname $0)
