@@ -49,3 +49,5 @@ status=$?
 echo ' ' >> $LOG
 
 echo "status: $status"
+exit $status
+
