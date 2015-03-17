@@ -33,7 +33,7 @@ LOG="$LOGDIR/backend_copy_debs_to_s3-log.$PUSHDATE"
 PLATFORM=sv4
 DEBS_DIR="${WORKSPACE}/build/target"
 S3_PATH="s3://loggly-release-packages/infra-sprint${SPRINT_NUMBER}/${PLATFORM}/"
-S3_CFG="/var/lib/jenkins/.s3cfg-s3debsbucket"
+S3_CFG="/var/lib/jenkins/publish_debs/.s3cfg-s3debsbucket"
 
 
 # Generate log header
