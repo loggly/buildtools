@@ -1,3 +1,11 @@
+# !!! THIS IS DEPRECATED PROJECT !!!
+We should revisit it and catch with current state of arts:
+- all builds are managed by Jenkins server at infrabuild host
+- continues deployment is documented here: https://loggly.jira.com/wiki/display/Engineering/Builds%2C+Continuous+Integration+and+Deployment
+
+---------------
+
+
 # Destination: Package
 
 We have crap in git.
